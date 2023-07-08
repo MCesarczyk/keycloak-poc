@@ -4,6 +4,16 @@ import { UserInfo } from "./UserInfo";
 import { Logout } from "./Logout";
 import { KeycloakType } from "./types";
 
+const config: Keycloak.KeycloakConfig = {
+  url: process.env.REACT_APP_KEYCLOAK_URL || "",
+  realm: process.env.REACT_APP_KEYCLOAK_REALM || "",
+  clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID || "",
+  // ssl-required: "external",
+  // public-client: true,
+  // confidential-port: 0,
+  // checkLoginIframe: false
+};
+
 interface SecuredState {
   keycloak: KeycloakType | null;
   authenticated: boolean;
@@ -16,7 +26,8 @@ export const Secured = () => {
   });
 
   useEffect(() => {
-    const keycloak = new Keycloak("/keycloak.json");
+    const keycloak = new Keycloak(config);
+
     keycloak.init({ onLoad: "login-required" }).then((authenticated) => {
       setState({ keycloak: keycloak, authenticated: authenticated });
     });
