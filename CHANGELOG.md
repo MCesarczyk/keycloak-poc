@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/MCesarczyk/keycloak-poc/compare/v0.1.2...v0.1.3) (2023-07-08)
+
+
+### Features
+
+* externalize login data in env file ([ab8d065](https://github.com/MCesarczyk/keycloak-poc/commit/ab8d065b7805b1ac9d633feed25d1e0b8f6d5814))
+
 ### [0.1.2](https://github.com/MCesarczyk/keycloak-poc/compare/v0.1.1...v0.1.2) (2023-07-08)
 
 

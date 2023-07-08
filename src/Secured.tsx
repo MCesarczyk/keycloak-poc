@@ -1,46 +1,52 @@
-import React, { Component } from "react";
+import { useEffect, useState } from "react";
 import Keycloak from "keycloak-js";
-import UserInfo from "./UserInfo";
-import Logout from "./Logout";
+import { UserInfo } from "./UserInfo";
+import { Logout } from "./Logout";
 import { KeycloakType } from "./types";
+
+const config: Keycloak.KeycloakConfig = {
+  url: process.env.REACT_APP_KEYCLOAK_URL || "",
+  realm: process.env.REACT_APP_KEYCLOAK_REALM || "",
+  clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID || "",
+  // ssl-required: "external",
+  // public-client: true,
+  // confidential-port: 0,
+  // checkLoginIframe: false
+};
 
 interface SecuredState {
   keycloak: KeycloakType | null;
   authenticated: boolean;
 }
 
-interface SecuredProps {}
+export const Secured = () => {
+  const [state, setState] = useState<SecuredState>({
+    keycloak: null,
+    authenticated: false,
+  });
 
-class Secured extends Component<SecuredProps, SecuredState> {
-  constructor(props: SecuredProps) {
-    super(props);
-    this.state = { keycloak: null, authenticated: false };
-  }
+  useEffect(() => {
+    const keycloak = new Keycloak(config);
 
-  componentDidMount() {
-    const keycloak = new Keycloak("/keycloak.json");
     keycloak.init({ onLoad: "login-required" }).then((authenticated) => {
-      this.setState({ keycloak: keycloak, authenticated: authenticated });
+      setState({ keycloak: keycloak, authenticated: authenticated });
     });
-  }
+  }, []);
 
-  render() {
-    if (this.state.keycloak) {
-      if (this.state.authenticated)
-        return (
-          <div>
-            <p>
-              This is a Keycloak-secured component of your application. You
-              shouldn't be able to see this unless you've authenticated with
-              Keycloak.
-            </p>
-            <UserInfo keycloak={this.state.keycloak} />
-          <Logout keycloak={this.state.keycloak} history={undefined} />
-          </div>
-        );
-      else return <div>Unable to authenticate!</div>;
-    }
-    return <div>Initializing Keycloak...</div>;
+  if (state.keycloak) {
+    if (state.authenticated)
+      return (
+        <div>
+          <p>
+            This is a Keycloak-secured component of your application. You
+            shouldn't be able to see this unless you've authenticated with
+            Keycloak.
+          </p>
+          <UserInfo keycloak={state.keycloak} />
+          <Logout keycloak={state.keycloak} />
+        </div>
+      );
+    else return <div>Unable to authenticate!</div>;
   }
-}
-export default Secured;
+  return <div>Initializing Keycloak...</div>;
+};

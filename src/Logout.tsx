@@ -1,23 +1,17 @@
-import { Component } from "react";
-import { History } from "history";
 import { KeycloakType } from "./types";
-import { withRouter } from "./WithRouterHoc";
+import { useNavigate } from "react-router-dom";
 
 interface LogoutProps {
-  history: History | undefined;
   keycloak: KeycloakType;
 }
 
-interface LogoutState {}
+export const Logout = ({ keycloak }: LogoutProps) => {
+  const navigate = useNavigate();
 
-class Logout extends Component<LogoutProps, LogoutState> {
-  logout() {
-    this.props.history && this.props.history.push("/");
-    this.props.keycloak.logout();
-  }
+  const logout = () => {
+    navigate("/");
+    keycloak.logout();
+  };
 
-  render() {
-    return <button onClick={() => this.logout()}>Logout</button>;
-  }
-}
-export default withRouter(Logout);
+  return <button onClick={logout}>Logout</button>;
+};
