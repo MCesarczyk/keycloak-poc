@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import Keycloak from "keycloak-js";
-import UserInfo from "./UserInfo";
-import Logout from "./Logout";
+import { UserInfo } from "./UserInfo";
+import { Logout } from "./Logout";
 import { KeycloakType } from "./types";
 
 interface SecuredState {
@@ -35,7 +35,7 @@ class Secured extends Component<SecuredProps, SecuredState> {
               Keycloak.
             </p>
             <UserInfo keycloak={this.state.keycloak} />
-          <Logout keycloak={this.state.keycloak} history={undefined} />
+            <Logout keycloak={this.state.keycloak} />
           </div>
         );
       else return <div>Unable to authenticate!</div>;

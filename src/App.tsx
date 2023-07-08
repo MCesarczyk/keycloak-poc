@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Link, Routes } from "react-router-dom";
-import Welcome from "./Welcome";
+import { Welcome } from "./Welcome";
 import Secured from "./Secured";
 import "./App.css";
 

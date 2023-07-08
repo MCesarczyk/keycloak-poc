@@ -1,9 +1,5 @@
-import React, { Component } from "react";
+import { useEffect, useState } from "react";
 import { KeycloakType } from "./types";
-
-interface UserInfoProps {
-  keycloak: KeycloakType;
-}
 
 interface UserInfoState {
   name: string;
@@ -11,37 +7,39 @@ interface UserInfoState {
   id: string;
 }
 
-interface UserInfo {
+interface KeycloakUserInfo {
   name: string;
   email: string;
   sub: string;
 }
 
-class UserInfo extends Component<UserInfoProps, UserInfoState> {
-  constructor(props: UserInfoProps) {
-    super(props);
-    this.state = {
-      name: "",
-      email: "",
-      id: "",
-    };
-    this.props.keycloak.loadUserInfo().then((userInfo: UserInfo) => {
-      this.setState({
+interface UserInfoProps {
+  keycloak: KeycloakType;
+}
+
+export const UserInfo = ({ keycloak }: UserInfoProps) => {
+  const [userInfo, setUserInfo] = useState<UserInfoState>({
+    name: "",
+    email: "",
+    id: "",
+  });
+
+  useEffect(() => {
+    keycloak.loadUserInfo().then((userInfo: KeycloakUserInfo) => {
+      setUserInfo({
         name: userInfo.name,
         email: userInfo.email,
         id: userInfo.sub,
       });
     });
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  render() {
-    return (
-      <div className="UserInfo">
-        <p>Name: {this.state.name}</p>
-        <p>Email: {this.state.email}</p>
-        <p>ID: {this.state.id}</p>
-      </div>
-    );
-  }
-}
-export default UserInfo;
+  return (
+    <div className="UserInfo">
+      <p>Name: {userInfo.name}</p>
+      <p>Email: {userInfo.email}</p>
+      <p>ID: {userInfo.id}</p>
+    </div>
+  );
+};
