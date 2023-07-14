@@ -8,10 +8,6 @@ const config: Keycloak.KeycloakConfig = {
   url: process.env.REACT_APP_KEYCLOAK_URL || "",
   realm: process.env.REACT_APP_KEYCLOAK_REALM || "",
   clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID || "",
-  // ssl-required: "external",
-  // public-client: true,
-  // confidential-port: 0,
-  // checkLoginIframe: false
 };
 
 interface SecuredState {
